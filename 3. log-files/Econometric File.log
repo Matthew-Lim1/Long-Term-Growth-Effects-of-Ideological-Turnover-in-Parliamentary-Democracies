@@ -1,0 +1,570 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\matth\OneDrive - UBC\ECON_V 490 006 2025W2 Seminar in Applied Economics - Team 14/3. log-files/Econometric File.log
+  log type:  text
+ opened on:  13 Apr 2026, 21:38:18
+
+. 
+. quietly {
+
+. 
+. **********************************
+. * Regression appropriateness tests
+. **********************************
+. 
+. * Explicit pooled model with country dummies to test whether country fixed effects matter jointly.
+. quietly regress growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.panel_id i.year if analysis_sample == 1, vce(cluster panel_id)
+
+. display "Joint significance test for country fixed effects"
+Joint significance test for country fixed effects
+
+. testparm i.panel_id
+
+ ( 1)  3.panel_id = 0
+ ( 2)  5.panel_id = 0
+ ( 3)  8.panel_id = 0
+ ( 4)  9.panel_id = 0
+ ( 5)  10.panel_id = 0
+ ( 6)  11.panel_id = 0
+ ( 7)  12.panel_id = 0
+ ( 8)  15.panel_id = 0
+ ( 9)  16.panel_id = 0
+ (10)  18.panel_id = 0
+ (11)  21.panel_id = 0
+ (12)  22.panel_id = 0
+ (13)  24.panel_id = 0
+ (14)  25.panel_id = 0
+ (15)  26.panel_id = 0
+ (16)  27.panel_id = 0
+ (17)  28.panel_id = 0
+ (18)  29.panel_id = 0
+ (19)  33.panel_id = 0
+ (20)  35.panel_id = 0
+       Constraint 1 dropped
+       Constraint 2 dropped
+       Constraint 4 dropped
+       Constraint 5 dropped
+       Constraint 16 dropped
+       Constraint 18 dropped
+       Constraint 20 dropped
+
+       F( 13,    20) = 3130.07
+            Prob > F =    0.0000
+
+. 
+. * FE version for the Hausman comparison.
+. quietly xtreg growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, fe
+
+. estimates store fe_test
+
+. 
+. * RE version for the Hausman comparison.
+. quietly xtreg growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, re
+
+. estimates store re_test
+
+. 
+. * If FE is preferred, we keep country fixed effects in the main model.
+. display "Hausman test for country fixed effects"
+Hausman test for country fixed effects
+
+. hausman fe_test re_test, sigmamore
+
+Note: the rank of the differenced variance matrix (13) does not equal the number of coefficients being tested (66); be sure this is what you expect, or there may be problems computing the test.  Examine the output of your estimators for anything
+        unexpected and possibly consider scaling your variables so that the coefficients are on a similar scale.
+
+                 ---- Coefficients ----
+             |      (b)          (B)            (b-B)     sqrt(diag(V_b-V_B))
+             |    fe_test      re_test       Difference       Std. err.
+-------------+----------------------------------------------------------------
+lag_ideolo~e |   -.8974761    -.9332262        .0357501        .0637491
+lag_log_gd~a |   -5.928256     -2.48744       -3.440817        .7448008
+log_saving~e |    3.623903     3.413604        .2102993        .4068964
+log_human_~l |    2.567414    -1.110682        3.678096        2.664086
+population~h |    .3585352    -.0117199        .3702551        .2020743
+        year |
+       1963  |    1.426239     1.340759        .0854799        .0267237
+       1964  |    2.922327     2.755655        .1666722        .0470349
+       1965  |    1.631585     1.308207        .3233781        .0771084
+       1966  |    1.844756     1.395458        .4492989        .1071781
+       1967  |    1.496259     .9591495        .5371097        .1471007
+       1968  |    3.293087     2.837227        .4558592        .1666834
+       1969  |     4.84827     4.280314        .5679566        .1872998
+       1970  |    3.022815     2.291734        .7310808        .2174616
+       1971  |     1.18129      .385686        .7956035         .232546
+       1972  |    3.766006     2.897597        .8684094         .261681
+       1973  |    5.058943     4.040086        1.018857        .2992662
+       1974  |    1.116099    -.0695244        1.185623        .3396407
+       1975  |    1.408973     .1669707        1.242002        .3676324
+       1976  |    4.857995     3.489172        1.368823        .3819426
+       1977  |    2.287788      .744078         1.54371        .4217368
+       1978  |    4.795289     3.191261        1.604027        .4431498
+       1979  |    4.224406     2.427283        1.797123        .4699235
+       1980  |    3.455932     1.579751        1.876181        .4891965
+       1981  |    .1495895    -1.807781        1.957371        .5138655
+       1982  |     -.12985    -2.051587        1.921737        .5220998
+       1983  |    1.119789    -.7423184        1.862107        .5289093
+       1984  |    2.625118     .7973412        1.827777         .535074
+       1985  |    2.472385     .6194452        1.852939        .5491007
+       1986  |     5.40689     3.556008        1.850882        .5567529
+       1987  |    4.553626     2.602447         1.95118        .5767688
+       1988  |    6.469637     4.460371        2.009266        .5897822
+       1989  |    5.619213     3.475208        2.144006        .6144426
+       1990  |    4.192042     1.962156        2.229886        .6343881
+       1991  |    4.180519     1.904131        2.276389        .6504207
+       1992  |    3.653765     1.133364          2.5204        .6804075
+       1993  |     4.15446     1.535744        2.618716        .6991404
+       1994  |    5.800382     3.240578        2.559805        .7084775
+       1995  |    6.420117      3.84607        2.574047        .7278513
+       1996  |    4.971161     2.281272        2.689889        .7506286
+       1997  |    7.712787      4.96825        2.744536        .7669001
+       1998  |    6.400765      3.50114        2.899625        .7955594
+       1999  |    7.659577     4.814609        2.844968        .8183763
+       2000  |    8.581696     5.625351        2.956345        .8419565
+       2001  |    6.721622     3.612839        3.108783        .8701341
+       2002  |    6.273545      3.09555        3.177996        .8896643
+       2003  |    4.733007     1.534367        3.198639        .8923518
+       2004  |    7.114109     3.916824        3.197286        .8931267
+       2005  |    6.884707     3.596935        3.287772        .9102226
+       2006  |    8.446732     5.075933        3.370799        .9256801
+       2007  |    9.225516     5.748675         3.47684         .942404
+       2008  |    6.601026     2.978215         3.62281        .9689506
+       2009  |    .8759134    -2.862948        3.738861        1.005619
+       2010  |    7.179944     3.578355        3.601589        .9911757
+       2011  |    7.837868     4.158506        3.679362         1.00712
+       2012  |    5.533189     1.756019         3.77717        1.025994
+       2013  |    4.482181     .7479789        3.734202        1.035372
+       2014  |    5.711976     2.046251        3.665724        1.029475
+       2015  |    7.213759      3.57612        3.637638        1.024648
+       2016  |    6.890397     3.198026        3.692371        1.039714
+       2017  |    8.576985     4.840166        3.736819         1.05171
+       2018  |    6.605444     2.771101        3.834343        1.069544
+       2019  |    9.175512     5.308792        3.866721        1.081312
+       2020  |    1.896182    -2.174557         4.07074        1.117886
+       2021  |    12.43528     8.419674        4.015602        1.119925
+       2022  |     8.25567     4.088836        4.166834        1.143033
+       2023  |    4.756451     .5205525        4.235899        1.163874
+------------------------------------------------------------------------------
+                          b = Consistent under H0 and Ha; obtained from xtreg.
+           B = Inconsistent under Ha, efficient under H0; obtained from xtreg.
+
+Test of H0: Difference in coefficients not systematic
+
+   chi2(13) = (b-B)'[(V_b-V_B)^(-1)](b-B)
+            =  60.12
+Prob > chi2 = 0.0000
+(V_b-V_B is not positive definite)
+
+. 
+. * This tests whether year dummies add explanatory power.
+. quietly xtreg growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, fe
+
+. display "Joint significance test for year fixed effects"
+Joint significance test for year fixed effects
+
+. testparm i.year
+
+ ( 1)  1963.year = 0
+ ( 2)  1964.year = 0
+ ( 3)  1965.year = 0
+ ( 4)  1966.year = 0
+ ( 5)  1967.year = 0
+ ( 6)  1968.year = 0
+ ( 7)  1969.year = 0
+ ( 8)  1970.year = 0
+ ( 9)  1971.year = 0
+ (10)  1972.year = 0
+ (11)  1973.year = 0
+ (12)  1974.year = 0
+ (13)  1975.year = 0
+ (14)  1976.year = 0
+ (15)  1977.year = 0
+ (16)  1978.year = 0
+ (17)  1979.year = 0
+ (18)  1980.year = 0
+ (19)  1981.year = 0
+ (20)  1982.year = 0
+ (21)  1983.year = 0
+ (22)  1984.year = 0
+ (23)  1985.year = 0
+ (24)  1986.year = 0
+ (25)  1987.year = 0
+ (26)  1988.year = 0
+ (27)  1989.year = 0
+ (28)  1990.year = 0
+ (29)  1991.year = 0
+ (30)  1992.year = 0
+ (31)  1993.year = 0
+ (32)  1994.year = 0
+ (33)  1995.year = 0
+ (34)  1996.year = 0
+ (35)  1997.year = 0
+ (36)  1998.year = 0
+ (37)  1999.year = 0
+ (38)  2000.year = 0
+ (39)  2001.year = 0
+ (40)  2002.year = 0
+ (41)  2003.year = 0
+ (42)  2004.year = 0
+ (43)  2005.year = 0
+ (44)  2006.year = 0
+ (45)  2007.year = 0
+ (46)  2008.year = 0
+ (47)  2009.year = 0
+ (48)  2010.year = 0
+ (49)  2011.year = 0
+ (50)  2012.year = 0
+ (51)  2013.year = 0
+ (52)  2014.year = 0
+ (53)  2015.year = 0
+ (54)  2016.year = 0
+ (55)  2017.year = 0
+ (56)  2018.year = 0
+ (57)  2019.year = 0
+ (58)  2020.year = 0
+ (59)  2021.year = 0
+ (60)  2022.year = 0
+ (61)  2023.year = 0
+
+       F( 61,   991) =    7.88
+            Prob > F =    0.0000
+
+. 
+. * This checks whether the FE residuals are heteroskedastic across panels.
+. quietly xtreg growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, fe
+
+. display "Modified Wald test for heteroskedasticity"
+Modified Wald test for heteroskedasticity
+
+. xttest3
+
+Modified Wald test for groupwise heteroskedasticity
+in fixed effect regression model
+
+H0: sigma(i)^2 = sigma^2 for all i
+
+chi2 (21)  =         609.31
+Prob > chi2 =          0.0000
+
+
+. 
+. * This checks whether serial correlation is present in the panel errors.
+. display "Wooldridge test for serial correlation"
+Wooldridge test for serial correlation
+
+. xtserial growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     if analysis_sample == 1
+
+Wooldridge test for autocorrelation in panel data
+H0: no first-order autocorrelation
+    F(  1,      20) =    225.248
+           Prob > F =      0.0000
+
+. 
+. * The quadratic term is tested, but we keep it out unless it clearly helps the model and story.
+. quietly xtreg growth_rate_annual lag_ideology_shift_magnitude lag_ideology_shift_squared ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, fe
+
+. display "Test of the quadratic ideology-shift term"
+Test of the quadratic ideology-shift term
+
+. test lag_ideology_shift_squared
+
+ ( 1)  lag_ideology_shift_squared = 0
+
+       F(  1,   990) =    0.05
+            Prob > F =    0.8165
+
+. local quadratic_p = r(p)
+
+. display "Quadratic ideology-shift term p-value = " %6.4f `quadratic_p'
+Quadratic ideology-shift term p-value = 0.8165
+
+. display "Preferred specification keeps the quadratic term? No"
+Preferred specification keeps the quadratic term? No
+
+. 
+. ******************************
+. * Stepwise fixed-effects table
+. ******************************
+. 
+. * Column 1: main explanatory variable only plus fixed effects.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store model1
+
+. 
+. * Column 2: add the convergence control.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude lag_log_gdp_per_capita ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store model2
+
+. 
+. * Column 3: add savings.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude lag_log_gdp_per_capita ///
+>     log_savings_share i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store model3
+
+. 
+. * Column 4: add human capital.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude lag_log_gdp_per_capita ///
+>     log_savings_share log_human_capital i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store model4
+
+. 
+. * Column 5: add population growth for the full preferred FE specification.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude lag_log_gdp_per_capita ///
+>     log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store model5
+
+. 
+. * Export the stepwise table that shows the main coefficient as controls are added.
+. quietly etable, estimates(model1 model2 model3 model4 model5) ///
+>     mstat(N) ///
+>     mstat(r2) ///
+>     keep(lag_ideology_shift_magnitude lag_log_gdp_per_capita log_savings_share ///
+>          log_human_capital population_growth) ///
+>     varlabel ///
+>     showstars showstarsnote ///
+>     title("Table 2. Stepwise Fixed-Effects Regressions of Annual Growth on Ideology Shifts") ///
+>     export("${tabledir}/02_stepwise_lagged_shift.docx", replace)
+
+. 
+. *****************
+. * Threshold table
+. *****************
+. 
+. * This tests whether or not the growth penalty comes from large shifts rather than minor cabinet drift
+. quietly xtpcse growth_rate_annual lag_shift_small_event lag_shift_medium_event lag_shift_large_event ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store threshold_model
+
+. 
+. quietly etable, estimates(threshold_model) ///
+>     mstat(N) ///
+>     mstat(r2) ///
+>     keep(lag_shift_small_event lag_shift_medium_event lag_shift_large_event ///
+>          lag_log_gdp_per_capita log_savings_share log_human_capital population_growth) ///
+>     varlabel ///
+>     showstars showstarsnote ///
+>     title("Table 3. Threshold Regressions for Small, Medium, and Large Ideology Shifts") ///
+>     export("${tabledir}/03_shift_thresholds.docx", replace)
+
+. 
+. ********************************
+. * Fixed-effects robustness table
+. ********************************
+. 
+. * Winsorize the key regression variables at the 1st and 99th percentiles for robustness
+. quietly {
+
+. 
+. * Preferred FE specification
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store fe_main
+
+. 
+. * Winsorized version of the preferred FE specification
+. quietly xtpcse growth_rate_annual_w lag_ideology_shift_magnitude_w ///
+>     lag_log_gdp_per_capita_w log_savings_share_w log_human_capital_w population_growth_w ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store fe_winsor
+
+. 
+. * Remove the global financial crisis years to check sensitivity to extreme macro shocks
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1 & !inlist(year, 2008, 2009), het corr(ar1)
+
+. estimates store fe_nocrisis
+
+. 
+. * Event-style treatment to see whether the result is driven by discrete large shifts
+. quietly xtpcse growth_rate_annual lag_major_shift_event ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store fe_event
+
+. 
+. quietly etable, estimates(fe_main fe_winsor fe_nocrisis fe_event) ///
+>     mstat(N) ///
+>     mstat(r2) ///
+>     keep(lag_ideology_shift_magnitude lag_ideology_shift_magnitude_w lag_major_shift_event ///
+>          lag_log_gdp_per_capita lag_log_gdp_per_capita_w ///
+>          log_savings_share log_savings_share_w ///
+>          log_human_capital log_human_capital_w ///
+>          population_growth population_growth_w) ///
+>     varlabel ///
+>     showstars showstarsnote ///
+>     title("Table 4. Fixed-Effects Robustness Checks") ///
+>     export("${tabledir}/04_fe_robustness.docx", replace)
+
+. 
+. **************************************
+. * Granger-style reverse-causality test
+. **************************************
+. 
+. * Does past ideology movement help predict current growth once past growth is controlled for?
+. quietly xtreg growth_rate_annual ///
+>     L1.growth_rate_annual L2.growth_rate_annual ///
+>     L1.ideology_shift_magnitude L2.ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, fe vce(cluster panel_id)
+
+. estimates store granger_growth
+
+. 
+. display "Granger-style timing test: do lagged ideology shifts help predict current growth?"
+Granger-style timing test: do lagged ideology shifts help predict current growth?
+
+. test L1.ideology_shift_magnitude L2.ideology_shift_magnitude
+
+ ( 1)  L.ideology_shift_magnitude = 0
+ ( 2)  L2.ideology_shift_magnitude = 0
+
+       F(  2,    20) =    5.04
+            Prob > F =    0.0169
+
+. local granger_shift_to_growth_p = r(p)
+
+. display "Lagged ideology-shift p-value in the growth equation = " %6.4f `granger_shift_to_growth_p'
+Lagged ideology-shift p-value in the growth equation = 0.0169
+
+. 
+. * Does past growth help predict current ideology movement once past ideology movement is controlled for?
+. quietly xtreg ideology_shift_magnitude ///
+>     L1.ideology_shift_magnitude L2.ideology_shift_magnitude ///
+>     L1.growth_rate_annual L2.growth_rate_annual ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year if analysis_sample == 1, fe vce(cluster panel_id)
+
+. estimates store granger_shift
+
+. 
+. display "Granger-style timing test: does lagged growth help predict current ideology shifts?"
+Granger-style timing test: does lagged growth help predict current ideology shifts?
+
+. test L1.growth_rate_annual L2.growth_rate_annual
+
+ ( 1)  L.growth_rate_annual = 0
+ ( 2)  L2.growth_rate_annual = 0
+
+       F(  2,    20) =    0.91
+            Prob > F =    0.4180
+
+. local granger_growth_to_shift_p = r(p)
+
+. display "Lagged growth p-value in the ideology-shift equation = " %6.4f `granger_growth_to_shift_p'
+Lagged growth p-value in the ideology-shift equation = 0.4180
+
+. 
+. quietly etable, estimates(granger_growth granger_shift) ///
+>     mstat(N) ///
+>     mstat(r2) ///
+>     keep(L1.growth_rate_annual L2.growth_rate_annual ///
+>          L1.ideology_shift_magnitude L2.ideology_shift_magnitude ///
+>          lag_log_gdp_per_capita log_savings_share log_human_capital population_growth) ///
+>     varlabel ///
+>     showstars showstarsnote ///
+>     title("Table 5. Granger-Style Reverse-Causality Checks") ///
+>     export("${tabledir}/05_granger_reverse_causality.docx", replace)
+
+. 
+. ***********************
+. * Directional extension
+. ***********************
+. 
+. * split leftward and rightward movement into small, medium, and large bins.
+. quietly xtpcse growth_rate_annual ///
+>     lag_small_left_event lag_small_right_event ///
+>     lag_medium_left_event lag_medium_right_event ///
+>     lag_large_left_event lag_large_right_event ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store direction_model
+
+. 
+. quietly etable, estimates(direction_model) ///
+>     mstat(N) ///
+>     mstat(r2) ///
+>     keep(lag_small_left_event lag_small_right_event ///
+>          lag_medium_left_event lag_medium_right_event ///
+>          lag_large_left_event lag_large_right_event ///
+>          lag_log_gdp_per_capita log_savings_share ///
+>          log_human_capital population_growth) ///
+>     varlabel ///
+>     showstars showstarsnote ///
+>     title("Table 6. Directional Extension by Shift Size") ///
+>     export("${tabledir}/06_directional_extension.docx", replace)
+
+. 
+. * Distribution + box + mean/95% CI figure for the six directional bins.
+. quietly {
+
+. 
+. ***********************
+. * Appendix subset table
+. ***********************
+. 
+. * All parliamentary democracies.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1, het corr(ar1)
+
+. estimates store subset_all
+
+. 
+. * PR parliamentary democracies only.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1 & pr_democracy == 1, het corr(ar1)
+
+. estimates store subset_pr
+
+. 
+. * Non-PR parliamentary democracies only.
+. quietly xtpcse growth_rate_annual lag_ideology_shift_magnitude ///
+>     lag_log_gdp_per_capita log_savings_share log_human_capital population_growth ///
+>     i.year i.panel_id if analysis_sample == 1 & pr_democracy == 0, het corr(ar1)
+
+. estimates store subset_nonpr
+
+. 
+. quietly etable, estimates(subset_all subset_pr subset_nonpr) ///
+>     mstat(N) ///
+>     mstat(r2) ///
+>     keep(lag_ideology_shift_magnitude lag_log_gdp_per_capita log_savings_share ///
+>          log_human_capital population_growth) ///
+>     varlabel ///
+>     showstars showstarsnote ///
+>     title("Table 7. Appendix Subset Comparison by Electoral System") ///
+>     export("${tabledir}/07_subset_appendix.docx", replace)
+
+. 
+. capture log close _all
