@@ -1,95 +1,97 @@
 # Long-Term Growth Effects of Ideological Turnover in Parliamentary Democracies
 
-This repository contains the full working project for an ECON 490 seminar paper on whether ideological turnover in government is associated with weaker subsequent economic growth in parliamentary democracies.
+This repository contains the final paper, poster, data files, replication code, log file, tables, and figures for an undergraduate applied economics research project on whether larger shifts in governing ideology are associated with weaker subsequent GDP per capita growth in parliamentary democracies.
 
-The paper combines macroeconomic data from the Penn World Table with cabinet ideology and institutional data from the Comparative Political Data Set (CPDS). The main empirical finding is that larger lagged ideology shifts are associated with lower next-year GDP per capita growth, with the strongest penalties concentrated in larger ideological realignments. Additional specifications examine threshold effects, robustness, Granger causality, directionality, and heterogeneity by electoral system.
+The paper studies 21 parliamentary democracies from 1962 to 2023 and finds that larger lagged ideology shifts are associated with lower next-year GDP per capita growth. The strongest penalties appear in large ideological realignments rather than routine cabinet drift. The paper also includes robustness checks, a Granger-causality exercise, a directionality extension, and subsample comparisons by electoral system.
 
-## Repository Contents
+## Repository Overview
 
-### Main paper
-- [`8. Paper/Final Paper.docx`](./8.%20Paper/Final%20Paper.docx): final written paper
+### Root-level outputs
+- [`Matthew Lim_Long Term Growth Effect of Ideological Turnover in Parliamentary Democracies.pdf`](./Matthew%20Lim_Long%20Term%20Growth%20Effect%20of%20Ideological%20Turnover%20in%20Parliamentary%20Democracies.pdf): final paper
+- [`Ideology Shift Poster.png`](./Ideology%20Shift%20Poster.png): final poster
 
-### Data
-- [`1. Data/pwt110.dta`](./1.%20Data/pwt110.dta): Penn World Table 11.0
-- [`1. Data/CPDS_1960-2023_Update_2025.dta`](./1.%20Data/CPDS_1960-2023_Update_2025.dta): Comparative Political Data Set
-- [`1. Data/processed`](./1.%20Data/processed): cleaned intermediate files created by the Stata workflow
-
-### Stata replication files
-- [`2. do-files/Econometric File.do`](./2.%20do-files/Econometric%20File.do): annotated do-file that cleans the data, constructs the variables, runs the models, and exports the final tables and figures
-- [`3. log-files/Econometric File.log`](./3.%20log-files/Econometric%20File.log): final log file from the compact replication run
-
-### Output tables
-- [`4. Tables`](./4.%20Tables): formatted regression and summary-statistics tables used in the paper
-
-Current table set:
-- `01_descriptive_statistics.docx`
-- `02_stepwise_lagged_shift.docx`
-- `03_shift_thresholds.docx`
-- `04_fe_robustness.docx`
-- `05_granger_reverse_causality.docx`
-- `06_directional_extension.docx`
-- `07_subset_appendix.docx`
-
-### Output figures
+### Data and replication folders
+- [`1. Data`](./1.%20Data): raw and processed data used in the paper
+- [`2. do-files`](./2.%20do-files): annotated Stata replication code
+- [`3. log-files`](./3.%20log-files): final Stata log from the replication run
+- [`4. Tables`](./4.%20Tables): exported regression tables and summary-statistics tables
 - [`5. Figures`](./5.%20Figures): exported figures used in the paper
 
-Current figure set:
-- `fig01_growth_by_shift_size.png`
-- `fig02_growth_around_large_shift.png`
-- `fig03_political_instability_scatter.png`
-- `fig04_directional_coefficients.png`
-- `figA1_growth_by_instability_regime.png`
+## Main Files
 
-### Background literature and project materials
-- [`6. Team 14 papers`](./6.%20Team%2014%20papers): papers collected for the literature review and project development
-- [`7. Other relevant papers`](./7.%20Other%20relevant%20papers): supporting literature
-- [`Meeting Minutes`](./Meeting%20Minutes): project planning records
+- [`2. do-files/Econometric File.do`](./2.%20do-files/Econometric%20File.do): main Stata do-file
+- [`3. log-files/Econometric File.log`](./3.%20log-files/Econometric%20File.log): final compact log file
+- [`4. Tables/01_descriptive_statistics.docx`](./4.%20Tables/01_descriptive_statistics.docx)
+- [`4. Tables/02_stepwise_lagged_shift.docx`](./4.%20Tables/02_stepwise_lagged_shift.docx)
+- [`4. Tables/03_shift_thresholds.docx`](./4.%20Tables/03_shift_thresholds.docx)
+- [`4. Tables/04_fe_robustness.docx`](./4.%20Tables/04_fe_robustness.docx)
+- [`4. Tables/05_granger_reverse_causality.docx`](./4.%20Tables/05_granger_reverse_causality.docx)
+- [`4. Tables/06_directional_extension.docx`](./4.%20Tables/06_directional_extension.docx)
+- [`4. Tables/07_subset_appendix.docx`](./4.%20Tables/07_subset_appendix.docx)
+
+## Data Sources
+
+The paper combines two main datasets:
+
+1. **Penn World Table 11.0** for macroeconomic variables, including GDP per capita, savings, human capital, and population.
+2. **Comparative Political Data Set 1960-2023** for cabinet ideology and institutional variables used to construct ideology-shift measures and sample restrictions.
+
+Paper-ready data citations:
+
+- Feenstra, Robert C., Robert Inklaar, and Marcel P. Timmer. 2025. *Penn World Table 11.0*. Groningen: Groningen Growth and Development Centre, University of Groningen. [https://doi.org/10.34894/FABVLR](https://doi.org/10.34894/FABVLR)
+- Armingeon, Klaus, Sarah Engler, Lucas Leemann, and David Weisstanner. 2025. *Comparative Political Data Set 1960-2023*. Zurich/Lueneburg/Lucerne: University of Zurich, Leuphana University Lueneburg, and University of Lucerne. [https://cpds-data.org/data/](https://cpds-data.org/data/)
 
 ## Empirical Workflow
 
-The Stata workflow does the following:
+The Stata workflow:
 
-1. Cleans and prepares the Penn World Table growth variables.
-2. Cleans the CPDS government and institutional variables.
-3. Constructs the ideology-shift, threshold, directional, and volatility measures.
-4. Merges the macroeconomic and political data into the final panel.
+1. Cleans and prepares Penn World Table growth variables.
+2. Cleans the CPDS political and institutional variables.
+3. Constructs ideology-shift, threshold, directional, and volatility measures.
+4. Merges the economic and political data into the final panel.
 5. Produces descriptive statistics and figures.
-6. Runs the diagnostic tests for fixed effects, heteroskedasticity, serial correlation, and nonlinearity.
-7. Estimates the main and extension models.
-8. Exports the final regression tables, figures, and log file.
+6. Runs fixed-effects, heteroskedasticity, serial-correlation, and nonlinearity diagnostics.
+7. Estimates the main and extension regressions.
+8. Exports the final tables, figures, and log file.
 
-## Main Specifications
+## Main Models
 
-The project estimates a sequence of related models:
+The project estimates:
 
-- Stepwise two-way fixed-effects regressions with annual GDP per capita growth as the dependent variable
-- Threshold regressions for small, medium, and large ideology shifts
-- Fixed-effects robustness checks using winsorisation, crisis exclusions, and event-style coding
-- Granger-causality tests
-- Directional regressions separating leftward and rightward shifts by size
-- Subsample regressions by electoral system
+- stepwise two-way fixed-effects growth regressions
+- threshold regressions for small, medium, and large ideology shifts
+- fixed-effects robustness checks using winsorisation, crisis exclusions, and event-style coding
+- Granger-causality regressions
+- directional regressions separating leftward and rightward shifts by size
+- subset regressions by electoral system
 
-For the main paper tables, the preferred estimator is a Prais-Winsten-style panel regression with panel-corrected standard errors that allow for heteroskedasticity across panels and AR(1) serial correlation within panels.
+For the main regression tables, the preferred estimator is a Prais-Winsten-style panel regression with panel-corrected standard errors that allow for heteroskedasticity across panels and AR(1) serial correlation within panels.
 
 ## How to Reproduce the Results
 
-1. Open Stata.
-2. Set the working directory to the repository root if needed.
-3. Run:
+Open Stata in the repository root and run:
 
 ```stata
 do "2. do-files/Econometric File.do"
 ```
 
-The do-file is set up to recreate the processed data, final tables, figures, and the final log file.
+This reproduces the processed data, exported tables, exported figures, and final log file used in the paper.
 
-## Data Sources
+## Core References Used in the Paper
 
-- Feenstra, Robert C., Robert Inklaar, and Marcel P. Timmer. 2025. *Penn World Table 11.0*.
-- Armingeon, Klaus, Sarah Engler, Lucas Leemann, and David Weisstanner. 2025. *Comparative Political Data Set 1960-2023*.
+The paper's argument is situated in the political economy of growth, policy uncertainty, and ideology literature. Key references include:
+
+- Alesina, Alberto, and Roberto Perotti. 1994. "The Political Economy of Growth: A Critical Survey of the Recent Literature." *World Bank Economic Review* 8 (3): 351-371.
+- Alesina, Alberto, Sule Ozler, Nouriel Roubini, and Phillip Swagel. 1996. "Political Instability and Economic Growth." *Journal of Economic Growth* 1 (2): 189-211.
+- Baker, Scott R., Nicholas Bloom, and Steven J. Davis. 2016. "Measuring Economic Policy Uncertainty." *Quarterly Journal of Economics* 131 (4): 1593-1636.
+- Boix, Carles. 1997. "Political Parties and the Supply Side of the Economy: The Provision of Physical and Human Capital in Advanced Economies, 1960-90." *American Journal of Political Science* 41 (3): 814-845.
+- Darby, Julia, Chengwei Li, and Vito A. Muscatelli. 2004. "Political Uncertainty, Public Expenditure and Growth." *European Journal of Political Economy* 20 (1): 153-179.
+- Haini, Hazwan, and Pang Wei Loon. 2021. "Does Government Ideology Affect the Relationship Between Government Spending and Economic Growth?" *Economic Papers* 40 (3): 209-225.
+- Potrafke, Niklas. 2011. "Does Government Ideology Influence Budget Composition? Empirical Evidence from OECD Countries." *Economics of Governance* 12 (2): 101-134.
+- Tavares, Jose. 2004. "Does Right or Left Matter? Cabinets, Credibility and Fiscal Adjustments." *Journal of Public Economics* 88 (12): 2447-2468.
 
 ## Notes
 
-- The repository reflects the final project structure used for the seminar submission.
-- The root-level folders are organized to match the paper workflow: raw data, Stata scripts, logs, exported tables, exported figures, and final written outputs.
-- The final log file was compacted so that the replication record stays readable while still preserving the core estimation and test workflow.
+- The paper uses annual GDP per capita growth as the dependent variable.
+- The main political variable is lagged ideology-shift magnitude.
+- The final log file was compacted so that the replication record remains readable while still preserving the key estimation workflow.
