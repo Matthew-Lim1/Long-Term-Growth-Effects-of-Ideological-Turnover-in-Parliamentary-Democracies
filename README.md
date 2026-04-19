@@ -6,7 +6,7 @@ The paper studies 21 parliamentary democracies from 1962 to 2023 and finds that 
 
 ## Repository Overview
 
-### Root-level outputs
+### Final Paper and Poster
 - [`Matthew Lim_Long Term Growth Effect of Ideological Turnover in Parliamentary Democracies.pdf`](./Matthew%20Lim_Long%20Term%20Growth%20Effect%20of%20Ideological%20Turnover%20in%20Parliamentary%20Democracies.pdf): final paper
 - [`Ideology Shift Poster.png`](./Ideology%20Shift%20Poster.png): final poster
 
